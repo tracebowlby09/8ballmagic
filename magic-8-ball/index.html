@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ask the Magic 8 Ball any question and receive a mystical randomized response.">
+  <title>Magic 8 Ball</title>
+  <link rel="stylesheet" href="css/main.css" id="theme-stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="site-title">Magic 8 Ball</h1>
+      <nav class="site-nav" aria-label="Site navigation">
+        <button id="btn-history" class="btn-icon" type="button" aria-label="View history" title="History">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </button>
+        <button id="btn-stats" class="btn-icon" type="button" aria-label="View statistics" title="Statistics">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </button>
+        <button id="btn-settings" class="btn-icon" type="button" aria-label="Open settings" title="Settings">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H1a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4 9.68a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V1a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="main-content">
+    <section class="input-section" aria-labelledby="ask-heading">
+      <form id="question-form" class="question-form" novalidate>
+        <label for="question-input" id="ask-heading" class="sr-only">Enter your question</label>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="question-input"
+            class="question-input"
+            placeholder="What is your question?"
+            autocomplete="off"
+            maxlength="200"
+            aria-describedby="input-help"
+            required
+          >
+          <button id="btn-ask" type="submit" class="btn-primary">
+            <span class="btn-text">Ask the Magic 8 Ball</span>
+            <span class="btn-loader" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p id="input-help" class="sr-only">Type your question and press Enter or click the button.</p>
+        <p id="input-error" class="input-error sr-only" role="alert"></p>
+      </form>
+    </section>
+
+    <section class="ball-section" aria-label="Magic 8 Ball display" aria-live="polite">
+      <div id="ball-container" class="ball-container" tabindex="0" role="img" aria-label="Magic 8 Ball">
+        <div id="ball" class="ball">
+          <div class="ball-highlight"></div>
+          <div class="triangle-window">
+            <span id="response-text" class="response-text" aria-live="assertive">?</span>
+          </div>
+          <div class="ball-reflection"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal-section" aria-label="Response reveal">
+      <div id="special-effects" class="special-effects" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <!-- History Drawer -->
+  <aside id="history-panel" class="history-panel" aria-label="Question history" hidden>
+    <div class="panel-header">
+      <h2>History</h2>
+      <button id="btn-close-history" class="btn-icon" aria-label="Close history">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="panel-content">
+      <ul id="history-list" class="history-list"></ul>
+      <p id="history-empty" class="history-empty">No questions asked yet.</p>
+    </div>
+  </aside>
+
+  <!-- Statistics Modal -->
+  <dialog id="stats-modal" class="modal" aria-labelledby="stats-title">
+    <div class="modal-header">
+      <h2 id="stats-title">Statistics</h2>
+      <button id="btn-close-stats" class="btn-icon" aria-label="Close statistics">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-content">
+      <div id="stats-grid" class="stats-grid"></div>
+      <button id="btn-clear-stats" class="btn-danger">Clear Statistics</button>
+    </div>
+  </dialog>
+
+  <!-- Settings Modal -->
+  <dialog id="settings-modal" class="modal" aria-labelledby="settings-title">
+    <div class="modal-header">
+      <h2 id="settings-title">Settings</h2>
+      <button id="btn-close-settings" class="btn-icon" aria-label="Close settings">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-content">
+      <ul class="settings-list">
+        <li class="setting-item">
+          <label class="setting-label" for="toggle-sound">Sound Effects</label>
+          <button id="toggle-sound" class="toggle-button" role="switch" aria-checked="true" aria-label="Toggle sound effects">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </button>
+        </li>
+        <li class="setting-item">
+          <label class="setting-label" for="toggle-animations">Animations</label>
+          <button id="toggle-animations" class="toggle-button" role="switch" aria-checked="true" aria-label="Toggle animations">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </button>
+        </li>
+        <li class="setting-item">
+          <label class="setting-label" for="toggle-clear-input">Auto-clear Input</label>
+          <button id="toggle-clear-input" class="toggle-button" role="switch" aria-checked="false" aria-label="Toggle automatic input clearing">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </button>
+        </li>
+        <li class="setting-item">
+          <label class="setting-label" for="theme-select">Theme</label>
+          <select id="theme-select" class="select-input">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="system">System</option>
+          </select>
+        </li>
+      </ul>
+      <div class="settings-actions">
+        <button id="btn-clear-history" class="btn-danger">Clear History</button>
+        <button id="btn-reset-settings" class="btn-danger">Reset All Data</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="screen-overlay" class="screen-overlay" aria-hidden="true"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

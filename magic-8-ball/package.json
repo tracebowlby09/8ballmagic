@@ -1,0 +1,7 @@
+{
+  "name": "magic-8-ball",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A polished, production-quality Magic 8 Ball website built with vanilla HTML, CSS, and JavaScript."
+}
