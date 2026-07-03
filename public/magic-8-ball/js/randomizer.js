@@ -81,4 +81,11 @@ export const getProbabilityMap = () => {
   return probabilities;
 };
 
-export default { selectResponse, getTotalWeight, getProbabilityMap, refreshWeightTable };
+const randomizer = {
+  selectResponse,
+  getTotalWeight,
+  getProbabilityMap,
+  refreshWeightTable,
+};
+
+export default randomizer;
